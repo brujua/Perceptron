@@ -9,7 +9,7 @@ ERROR_ARGS = "Invalid Argument. \nUsage: python " + sys.argv[0] + " <data-set-fi
 (tab separated, each data point in one line)"
 ERROR_NOT_CONVERGED = "Error, training did not converged, the training data must be non linearly separable"
 PLOT_TITLE = "Perceptron"
-MAX_EPOCHS = 100000
+MAX_EPOCHS = 1000
 LEARNING_RATE = 0.1
 
 _weights = []
@@ -35,16 +35,16 @@ def train(training_points: List) -> bool:
         for point in training_points:
             result = evaluate(point[:DIMENSION])
             desired_result = point[DIMENSION]
-            pass
             if result != desired_result:
                 finished = False
-                for i in range(0, DIMENSION):
-                    if result < desired_result:
+                if result < desired_result:
+                    for i in range(0, DIMENSION):
                         _weights[i] += point[i] * LEARNING_RATE
-                        _weights[DIMENSION] += LEARNING_RATE  # Bias
-                    else:  # result is > than desired
+                    _weights[DIMENSION] += LEARNING_RATE  # Bias
+                else:  # result is > than desired
+                    for i in range(0, DIMENSION):
                         _weights[i] -= point[i] * LEARNING_RATE
-                        _weights[DIMENSION] -= LEARNING_RATE  # Bias
+                    _weights[DIMENSION] -= LEARNING_RATE  # Bias
     return finished
 
 
